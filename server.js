@@ -16,16 +16,21 @@ const userRoute = require('./router/user.route');
 const app = express();
 dotenv.config();
 app.use(express.json());
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+].filter(Boolean);
+
 app.use(cors({
-    origin: "*"
+    origin: allowedOrigins,
 }))
 
 connectBD();
 
 
 
-const PORT = process.env.PORT;
-const MONGO_URL = process.env.MONGO_URL;
+const PORT = process.env.PORT || 3000;
 
 
 
@@ -45,58 +50,3 @@ app.use("/api/auth", userRoute)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const express = require('express');
-// const dotenv = require('dotenv');
-
-
-// const app = express();
-// dotenv.config();
-// const PORT = process.env.PORT;
-
-// app.use(express.json());
-
-// app.listen(PORT, () => {
-//     console.log(`Server démarrer sur http://localhost:${PORT}`);
-// })
-
-// app.get('/', (req , res) => {
-//     res.send('Bienvenue dans le serveurs express')
-// })
