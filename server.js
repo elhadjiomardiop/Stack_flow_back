@@ -15,16 +15,20 @@ const userRoute = require('./router/user.route');
 //Appeler la fonction dotenv pour utiliser les variables d'environnement
 const app = express();
 dotenv.config();
+app.use(cors());    
 app.use(express.json());
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:5173',
-].filter(Boolean);
+    "https://stack-flow-front.vercel.app/",
+    "http://localhost:5173",
+    ];
 
-app.use(cors({
-    origin: allowedOrigins,
-}))
+    app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+    })
+);
 
 connectBD();
 
