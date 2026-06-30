@@ -4,21 +4,25 @@ const questionSchema = new mongoose.Schema({
 
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     description: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     tags: [{
-        type: String
+        type: String,
+        trim: true
     }],
 
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
 
     votes: {

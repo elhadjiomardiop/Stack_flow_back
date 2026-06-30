@@ -4,17 +4,20 @@ const commentSchema = new mongoose.Schema({
 
     content: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     answer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Answer"
+        ref: "Answer",
+        required: true
     },
 
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     }
 
 }, {

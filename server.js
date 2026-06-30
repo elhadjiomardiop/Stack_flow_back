@@ -1,10 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors')
+const mongoose = require('mongoose');
 //Importation fonction de connexion
 const connectBD = require('./config/db');
-//import le user route
-const userRoute = require('./router/user.route');
+const authRoute = require('./router/auth.routes');
+const questionRoute = require('./router/question.routes');
+const answerRoute = require('./router/answer.routes');
+const commentRoute = require('./router/comment.routes');
+const voteRoute = require('./router/vote.routes');
 
 
 //Import express from 'express'
@@ -15,20 +19,26 @@ const userRoute = require('./router/user.route');
 //Appeler la fonction dotenv pour utiliser les variables d'environnement
 const app = express();
 dotenv.config();
-app.use(cors());    
-app.use(express.json());
-
 const allowedOrigins = [
-    "https://stack-flow-front.vercel.app/",
+    process.env.FRONTEND_URL,
+    "https://stack-flow-front.vercel.app",
     "http://localhost:5173",
-    ];
+    "http://127.0.0.1:5173",
+].filter(Boolean);
 
-    app.use(
+app.use(
     cors({
-        origin: allowedOrigins,
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(new Error('Not allowed by CORS'));
+        },
         credentials: true,
     })
 );
+app.use(express.json());
 
 connectBD();
 
@@ -48,7 +58,18 @@ app.get('/', (req, res) => {
     res.send('Bienvenue sur mon server express')
 })
 
-app.use("/api/auth", userRoute)
+app.get('/api/health', (req, res) => {
+    res.json({
+        ok: true,
+        dbState: mongoose.connection.readyState,
+    });
+});
+
+app.use("/api/auth", authRoute);
+app.use("/api/questions", questionRoute);
+app.use("/api/answers", answerRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/votes", voteRoute);
 
 
 
