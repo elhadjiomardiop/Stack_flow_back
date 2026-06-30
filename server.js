@@ -21,7 +21,7 @@ const app = express();
 dotenv.config();
 const allowedOrigins = [
     process.env.FRONTEND_URL,
-    "https://stack-flow-front-git-main-elhadjiomardiops-projects.vercel.app/",
+    "https://stack-flow-front.vercel.app/",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ].filter(Boolean);
